@@ -13,19 +13,22 @@ const client = new pg.Client({
   ssl: settings.ssl
 });
 
-client.connect((err) => {
-  if (err) {
-    return console.error("Connection Error", err);
-  }
-  client.query("SELECT first_name, last_name, birthdate FROM famous_people WHERE last_name  IN ($1::text)",
-    name, (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      postEach(result);
-      client.end();
-    });
-});
+
+function connect() {
+  client.connect((err) => {
+    if (err) {
+      return console.error("Connection Error", err);
+    }
+    client.query("SELECT first_name, last_name, birthdate FROM famous_people WHERE last_name  IN ($1::text)",
+      name, (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
+        postEach(result);
+        client.end();
+      });
+  });
+}
 
 function postName(result, row) {
 
@@ -40,5 +43,6 @@ function postEach(result) {
   for (let x in result.rows) {
     postName(result, x);
   }
-
 }
+
+connect();
