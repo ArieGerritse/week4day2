@@ -22,17 +22,23 @@ client.connect((err) => {
       if (err) {
         return console.error("error running query", err);
       }
-      // console.log(result.rows[0].number); //output: 1
-      // console.log(result.rows[0]);
-      for (let x in result.rows[0]) {
-        console.log(result.rows[0][x]);
-        console.log(x);
-      }
-      // console.log(Object.keys(result.rows).length);
-      console.log(`Found ${result.rowCount} person(s) by the name '${name}:'`);
-      console.log(`-${result.rowCount}: ${result.rows[0].first_name} ${result.rows[0].last_name
-      }, born ${result.rows[0].birthdate.toISOString().substr(0, 10)}`);
-      // console.log(result.rows[0].first_name);
+      postEach(result);
       client.end();
     });
 });
+
+function postName(result, row) {
+
+  console.log(`-${parseInt(row) + 1}: ${result.rows[row].first_name} ${result.rows[row].last_name
+      }, born ${result.rows[row].birthdate.toISOString().substr(0, 10)}`);
+
+}
+
+function postEach(result) {
+
+  console.log(`Found ${result.rowCount} person(s) by the name '${name}:'`);
+  for (let x in result.rows) {
+    postName(result, x);
+  }
+
+}
