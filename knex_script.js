@@ -3,13 +3,16 @@ const settings = require("./settings"); // settings.json
 const name = process.argv.slice(2);
 
 
-const client = new pg.Client({
-  user: settings.user,
-  password: settings.password,
-  database: settings.database,
-  host: settings.hostname,
-  port: settings.port,
-  ssl: settings.ssl
+const client = require('knex')({
+  client: 'mysql',
+  connection: {
+    user: settings.user,
+    password: settings.password,
+    database: settings.database,
+    host: settings.hostname,
+    port: settings.port,
+    ssl: settings.ssl
+  }
 });
 
 
@@ -32,7 +35,7 @@ function postName(result, row) {
 
 function postEach() {
 
-  client.query("SELECT first_name, last_name, birthdate FROM famous_people WHERE last_name = ($1::text)",
+  client.query("SELECT first_name, last_name, birthdate FROM famous_people WHERE last_name  IN ($1::text)",
     name, (err, result) => {
       if (err) {
         return console.error("error running query", err);
