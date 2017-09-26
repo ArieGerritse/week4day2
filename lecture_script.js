@@ -1,3 +1,13 @@
+const settings = require("./settings");
+const pg = require('pg');
+
+const config = {
+  user: settings.user,
+  database: settings.database,
+  password: settings.password,
+  port: settings.port
+};
+
 const db = new pg.Client(config);
 
 db.connect(error => {
@@ -13,8 +23,10 @@ db.connect(error => {
           console.log(column, row[column]);
         }
       });
+      return 'YAY!';
     })
-    .then(() => {
+    .then(mood => {
+      console.log(mood);
       db.end(error => {
         if (error) throw error;
       });
