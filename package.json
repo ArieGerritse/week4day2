@@ -1,18 +1,25 @@
 {
-  "name": "assignment",
+  "name": "empty",
   "version": "1.0.0",
   "description": "",
-  "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js",
-    "local": "./node_modules/.bin/nodemon --watch server -e js server/index.js"
-  },
-  "author": "Lighthouse Labs",
-  "license": "ISC",
+  "main": "add_person.js",
   "dependencies": {
     "knex": "^0.13.0",
     "pg": "^7.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArieGerritse/week4day2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArieGerritse/week5day2/issues"
+  },
+  "homepage": "https://github.com/ArieGerritse/week4day2#readme"
 }
