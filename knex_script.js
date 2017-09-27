@@ -1,51 +1,66 @@
-const pg = require("pg");
-const settings = require("./settings"); // settings.json
-const name = process.argv.slice(2);
-
-
-const client = require('knex')({
-  client: 'mysql',
-  connection: {
-    user: settings.user,
-    password: settings.password,
-    database: settings.database,
-    host: settings.hostname,
-    port: settings.port,
-    ssl: settings.ssl
-  }
+knex.schema.createTable('talbeName', (talbe) => {
+  table.increments(); //auto inc PK
+  table.string('variable thing');
+  table.string('second variable ect..');
 });
 
+knex.schema.createTable('talbeName1', (talbe) => {
+  table.dropColumn('tableName1'); //remove colomn
+  table.string('variable thing'); // add talbes for first table
+  table.string('second variable ect..');
+});
 
-function connect() {
-  client.connect((err) => {
-    if (err) {
-      return console.error("Connection Error", err);
-    }
+knex.schema.talbe('table1', (talbe) => {
+  table.integer('table1_id').unsigned();
+});
 
-    postEach();
-  });
-}
+var pg = require('knex')({
+  client: 'pg',
+  connection: 'postgres://username:password', //kjensen@localhost:5432/w42
+  searchPath: 'knex,public'
+});
 
-function postName(result, row) {
+console.log(knex('users').toString());
 
-  console.log(`-${parseInt(row) + 1}: ${result.rows[row].first_name} ${result.rows[row].last_name
-      }, born ${result.rows[row].birthdate.toISOString().substr(0, 10)}`);
+knex('users').asCallback((error, users) => {
+  console.log(users);
+});
 
-}
+knex('users').asCallback((error, users) => {
+  done(users);
+});
 
-function postEach() {
-
-  client.query("SELECT first_name, last_name, birthdate FROM famous_people WHERE last_name  IN ($1::text)",
-    name, (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      console.log(`Found ${result.rowCount} person(s) by the name '${name}:'`);
-      for (let x in result.rows) {
-        postName(result, x);
-      }
-      client.end();
+getAllUsers: (done) => {
+  db.connect((error, client) => {
+    client.query('select * from users', (err, result) => {
+      done(result.rows);
+      db.close(client);
     });
-}
+  });
+};
 
-connect();
+getAllUsers: (done) => {
+  knex('users').asCallback((error, users) => {
+    done(users);
+  });
+};
+
+module.exports = (database) => {
+  return (request, repsonse, next) => {
+    database.getALlUsers((users) => {
+      repsonse.locals.users = users;
+      next();
+    });
+  };
+};
+
+getAllUrlsForUser: (user, done) => {
+  knex.select('short', 'long').from('urls').where('user_id', user).asCallback((error, urls) => {
+    done(urls);
+  });
+};
+
+//add to package.json add to scripts
+//"knex": "node_modules/.bin/knex"
+// npm run knex or npm run knex init for new file
+// \dt to look at databases
